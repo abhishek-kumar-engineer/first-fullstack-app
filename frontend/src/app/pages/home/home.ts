@@ -24,7 +24,16 @@ export class Home implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();             // token clear karo
-    this.router.navigate(['/login']);      // login pe bhejo
+    this.authService.logout().subscribe({
+      next: () => {
+        this.authService.clearSession();       // localStorage clear
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        // API fail ho toh bhi local session clear karo
+        this.authService.clearSession();
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

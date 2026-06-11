@@ -113,10 +113,14 @@ class AuthController:
             'user_id' : user['id'],
             'name'    : user['name'],
             'email'   : user['email'],
+            'user_role' : user['user_role'],
             'exp'     : datetime.datetime.utcnow() +
                         datetime.timedelta(hours=JWT_EXPIRY)
         }
         token = jwt.encode(payload, JWT_SECRET, algorithm='HS256')
+
+        # Login status TRUE karo
+        UserModel.update_login_status(user['id'], True)
 
         # 5. Token return karo
         return jsonify({
@@ -126,7 +130,9 @@ class AuthController:
             'user'    : {
                 'id'   : user['id'],
                 'name' : user['name'],
-                'email': user['email']
+                'email': user['email'],
+                'user_role': user['user_role'],
+                'user_login_status': user['user_login_status']
             }
         }), 200
     
@@ -138,6 +144,19 @@ class AuthController:
             'user'   : {
                 'id'   : current_user['user_id'],
                 'name' : current_user['name'],
-                'email': current_user['email']
+                'email': current_user['email'],
+                'user_role': current_user['user_role'],
+                'user_login_status': current_user['user_login_status']
             }
+        }), 200
+    
+    @staticmethod
+    @token_required
+    def logout(current_user):
+        # ✅ Logout status FALSE karo
+        UserModel.update_login_status(current_user['user_id'], False)
+
+        return jsonify({
+            'success': True,
+            'message': 'Logged out successfully!'
         }), 200

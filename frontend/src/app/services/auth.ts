@@ -37,7 +37,12 @@ export class Auth {
   }
 
   // ── Logout ────────────────────────────────────────
-  logout(): void {
+  logout(): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/logout`, {});
+  }
+
+  // Ye bhi add karo — local cleanup
+  clearSession(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   }

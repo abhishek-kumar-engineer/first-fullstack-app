@@ -44,3 +44,19 @@ class UserModel:
             plain_password.encode('utf-8'),
             hashed_password.encode('utf-8')
         )
+    
+    @staticmethod
+    def update_login_status(user_id, status):
+        """Login/Logout pe status update karo"""
+        conn = get_db_connection()
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    """UPDATE users 
+                       SET user_login_status = %s 
+                       WHERE id = %s""",
+                    (status, user_id)
+                )
+                conn.commit()
+        finally:
+            conn.close()
