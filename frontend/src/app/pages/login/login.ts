@@ -37,6 +37,7 @@ export class Login {
 
     this.authService.login(this.formData).subscribe({
       next: (response) => {
+        // console.log('Login successful:', response);
         this.isLoading = false;
 
         // Token aur user info save karo
@@ -46,6 +47,7 @@ export class Login {
         this.router.navigate(['/home']);
       },
       error: (err) => {
+        console.error('Login failed:', err);
         this.isLoading = false;
         this.errorMsg = err.error?.message || 'Something went wrong!';
       }

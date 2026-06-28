@@ -7,6 +7,10 @@ import jwt
 import datetime
 from functools import wraps
 from config import JWT_SECRET, JWT_EXPIRY
+from constants.messages import AuthMessages
+from constants.status_codes import StatusCode
+from utils.validators import AuthValidator
+from utils.response_handler import ResponseHandler
 
 
 # ── Token verify decorator ───────────────────────────────
@@ -19,10 +23,7 @@ def token_required(f):
             token = request.headers['Authorization'].split(' ')[1]
 
         if not token:
-            return jsonify({
-                'success': False,
-                'message': 'Token missing'
-            }), 401
+            return ResponseHandler.unauthorized(AuthMessages.TOKEN_MISSING)
 
         try:
             decoded        = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
@@ -32,15 +33,9 @@ def token_required(f):
             current_user   = decrypt_data(encrypted_data)
 
         except jwt.ExpiredSignatureError:
-            return jsonify({
-                'success': False,
-                'message': 'Token expired'
-            }), 401
+            return ResponseHandler.unauthorized(AuthMessages.TOKEN_EXPIRED)
         except Exception as e:
-            return jsonify({
-                'success': False,
-                'message': 'Invalid token'
-            }), 401
+            return ResponseHandler.unauthorized(AuthMessages.TOKEN_INVALID)
 
         return f(current_user, *args, **kwargs)
     return decorated
@@ -58,31 +53,30 @@ class AuthController:
         email    = data.get('email', '').strip()
         password = data.get('password', '').strip()
 
-        if not name or not email or not password:
-            return jsonify({
-                'success': False,
-                'message': 'All fields are required'
-            }), 400
-
-        if len(password) < 6:
-            return jsonify({
-                'success': False,
-                'message': 'Password must be at least 6 characters'
-            }), 400
+          # ── Validate ─────────────────────────────────
+        errors = AuthValidator.validate_register(data)
+        if errors:
+            return ResponseHandler.validation_error(errors)
 
         existing = UserModel.find_by_email(email)
         if existing:
-            return jsonify({
-                'success': False,
-                'message': 'Email already registered'
-            }), 409
+            return ResponseHandler.error(
+                AuthMessages.EMAIL_ALREADY_EXISTS,
+                StatusCode.CONFLICT
+            )
 
-        UserModel.create_user(name, email, password)
-        return jsonify({
-            'success': True,
-            'message': 'Registration successful!'
-        }), 201
-
+        try:
+            UserModel.create_user(
+                name=name,
+                email=email,
+                password=password
+            )
+            return ResponseHandler.success(
+                AuthMessages.REGISTER_SUCCESS,
+                status_code=StatusCode.CREATED
+            )
+        except Exception as e:
+            return ResponseHandler.server_error()
 
     @staticmethod
     @decrypt_request       # ← request decrypt karo
@@ -92,18 +86,20 @@ class AuthController:
         email    = data.get('email', '').strip()
         password = data.get('password', '').strip()
 
-        if not email or not password:
-            return jsonify({
-                'success': False,
-                'message': 'Email and password are required'
-            }), 400
+        # ── Validate ─────────────────────────────────
+        errors = AuthValidator.validate_login(data)
+        if errors:
+            return ResponseHandler.validation_error(errors)
 
-        user = UserModel.find_by_email(email)
-        if not user or not UserModel.verify_password(password, user['password']):
-            return jsonify({
-                'success': False,
-                'message': 'Invalid email or password'
-            }), 401
+        # ── Business Logic ───────────────────────────
+        user = UserModel.find_by_email(data['email'].strip())
+
+        if not user or not UserModel.verify_password(
+            data['password'].strip(), user['password']
+        ):
+            return ResponseHandler.unauthorized(
+                AuthMessages.INVALID_CREDENTIALS
+            )
 
         UserModel.update_login_status(user['id'], True)
 
@@ -122,41 +118,47 @@ class AuthController:
         }
         token = jwt.encode(jwt_payload, JWT_SECRET, algorithm='HS256')
 
-        return jsonify({
-            'success': True,
-            'message': 'Login successful!',
-            'token'  : token,
-            'user'   : {
-                'id'               : user['id'],
-                'name'             : user['name'],
-                'email'            : user['email'],
-                'user_role'        : user['user_role'],
-                'user_login_status': True
+        return ResponseHandler.success(
+            AuthMessages.LOGIN_SUCCESS,
+            data={
+                'token': token,
+                'user' : {
+                    'id'               : user['id'],
+                    'name'             : user['name'],
+                    'email'            : user['email'],
+                    'user_role'        : user['user_role'],
+                    'user_login_status': True
+                }
             }
-        }), 200
+        )
 
 
     @staticmethod
     @token_required
     @encrypt_response      # ← response encrypt karo
     def logout(current_user):
-        UserModel.update_login_status(current_user['user_id'], False)
-        return jsonify({
-            'success': True,
-            'message': 'Logged out successfully!'
-        }), 200
+        try:
+            UserModel.update_login_status(current_user['user_id'], False)
+            return ResponseHandler.success(AuthMessages.LOGOUT_SUCCESS)
+        except Exception:
+            return ResponseHandler.server_error()
 
 
     @staticmethod
     @token_required
     @encrypt_response
     def get_profile(current_user):
-        return jsonify({
-            'success': True,
-            'user'   : {
-                'id'       : current_user['user_id'],
-                'name'     : current_user['name'],
-                'email'    : current_user['email'],
-                'user_role': current_user['user_role']
+        user = UserModel.find_by_email(current_user['email'])
+
+        if not user:
+            return ResponseHandler.not_found('User not found')
+
+        return ResponseHandler.success(
+            AuthMessages.PROFILE_FETCHED_SUCCESSFULLY,
+            data={
+                'id'       : user['id'],
+                'name'     : user['name'],
+                'email'    : user['email'],
+                'user_role': user['user_role']
             }
-        }), 200
+        )
