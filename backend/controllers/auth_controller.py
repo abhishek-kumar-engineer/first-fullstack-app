@@ -101,7 +101,7 @@ class AuthController:
                 AuthMessages.INVALID_CREDENTIALS
             )
 
-        UserModel.update_login_status(user['id'], True)
+        UserModel.update_login_status(user['id'], 1)
 
         # JWT payload encrypt karo
         user_payload   = {
@@ -138,7 +138,7 @@ class AuthController:
     @encrypt_response      # ← response encrypt karo
     def logout(current_user):
         try:
-            UserModel.update_login_status(current_user['user_id'], False)
+            UserModel.update_login_status(current_user['user_id'], 0)
             return ResponseHandler.success(AuthMessages.LOGOUT_SUCCESS)
         except Exception:
             return ResponseHandler.server_error()

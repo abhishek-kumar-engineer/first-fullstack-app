@@ -37,11 +37,11 @@ export class Login {
 
     this.authService.login(this.formData).subscribe({
       next: (response) => {
-        // console.log('Login successful:', response);
+        console.log('Login successful:', response);
         this.isLoading = false;
-
+        let data = response?.data;
         // Token aur user info save karo
-        this.authService.saveToken(response.token, response.user);
+        this.authService.saveToken(data?.token, data?.user);
 
         // Home page pe redirect
         this.router.navigate(['/home']);
