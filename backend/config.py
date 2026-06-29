@@ -19,7 +19,7 @@ MAIL_SERVER       = 'smtp.gmail.com'
 MAIL_PORT         = 587
 MAIL_USE_TLS      = True
 MAIL_USERNAME     = 'abhishek.kumar.storage1@gmail.com'      # ← apna Gmail
-MAIL_PASSWORD     = '<Storage@1/>'       # ← App Password
+MAIL_PASSWORD     = 'maft uqqd pael omwe'       # ← App Password
 MAIL_FROM_NAME    = 'First Fullstack App'
 
 # ── Reset Token Config ────────────────────────────────
