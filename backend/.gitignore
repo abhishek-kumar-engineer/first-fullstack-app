@@ -1,0 +1,8 @@
+# Environment — secrets yahan hain
+.env
+
+# Python
+venv/
+__pycache__/
+**/__pycache__/
+**/*.pyc
