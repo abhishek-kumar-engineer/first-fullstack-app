@@ -3,6 +3,11 @@ import os
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 from routes.auth_routes import auth_bp
+from utils.email_helper import mail
+from config import (
+    MAIL_SERVER, MAIL_PORT,
+    MAIL_USE_TLS, MAIL_USERNAME, MAIL_PASSWORD
+)
 
 app = Flask(__name__)
 # Angular build folder ka path
@@ -12,6 +17,15 @@ ANGULAR_BUILD_PATH = os.path.join(
 )
 
 app = Flask(__name__, static_folder=ANGULAR_BUILD_PATH)
+
+# ── Mail config ───────────────────────────────────────
+app.config['MAIL_SERVER']   = MAIL_SERVER
+app.config['MAIL_PORT']     = MAIL_PORT
+app.config['MAIL_USE_TLS']  = MAIL_USE_TLS
+app.config['MAIL_USERNAME'] = MAIL_USERNAME
+app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
+
+mail.init_app(app)    # ← mail initialize karo
 
 CORS(app, resources={
     r"/api/*": {
