@@ -34,7 +34,9 @@
           required
         />
       </div>
-
+      <span class="link">
+        <a routerLink="/forgot-password">Password bhool gaye?</a>
+      </span>
       <button type="submit" [disabled]="isLoading">
         {{ isLoading ? 'Logging in...' : 'Login' }}
       </button>

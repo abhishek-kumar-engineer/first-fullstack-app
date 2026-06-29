@@ -35,7 +35,7 @@ export class Register {
     this.successMsg = '';
     this.isLoading  = true;
 
-    this.authService.register(this.formData).subscribe({
+    this.authService.postData('register', this.formData).subscribe({
       next: (response) => {
         this.isLoading  = false;
         this.successMsg = response.message;

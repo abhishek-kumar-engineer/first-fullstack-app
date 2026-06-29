@@ -35,7 +35,7 @@ export class Login {
     this.errorMsg = '';
     this.isLoading = true;
 
-    this.authService.login(this.formData).subscribe({
+    this.authService.postData('login', this.formData).subscribe({
       next: (response) => {
         console.log('Login successful:', response);
         this.isLoading = false;

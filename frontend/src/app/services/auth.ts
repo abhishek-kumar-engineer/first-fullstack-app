@@ -52,4 +52,9 @@ export class Auth {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
+
+  // common postData method for all api calls
+  postData(url: string, data: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/${url}`, data);
+  }
 }
