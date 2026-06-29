@@ -340,6 +340,28 @@ Visit `http://localhost:5000` — single server serves both frontend and API!
 | Separation of Concerns | Routes / Controllers / Models / Utils |
 
 ---
+## 📝 Code Responsibility
+File      Responsibility
+constants/status_codes.py  HTTP codes ek jagah
+constants/messages.py      Saare messages ek jagah
+utils/validators.py        Sirf validation logic
+utils/response_handler.py  Consistent response format
+controllers/auth_controller.py  Sirf business logic
+
+## 🧠 Final Architecture
+Request
+   ↓
+crypto_middleware  → decrypt
+   ↓
+AuthValidator      → validate → errors? → ResponseHandler.validation_error()
+   ↓
+AuthController     → business logic
+   ↓
+ResponseHandler    → consistent format + correct status code
+   ↓
+crypto_middleware  → encrypt
+   ↓
+Response
 
 ## 🙋 Author
 
