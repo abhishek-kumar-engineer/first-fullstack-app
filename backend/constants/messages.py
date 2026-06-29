@@ -28,3 +28,11 @@ class AuthMessages:
     SERVER_ERROR            = 'Something went wrong — please try again'
     INVALID_REQUEST_FORMAT  = 'Invalid request format'
     DECRYPTION_FAILED       = 'Request could not be processed'
+
+    # ── Reset Password messages ────────────────────────
+    RESET_EMAIL_SENT        = 'Password reset link sent to your email'
+    RESET_TOKEN_INVALID     = 'Reset link is invalid or has expired'
+    RESET_TOKEN_USED        = 'Reset link has already been used'
+    RESET_SUCCESS           = 'Password reset successful! Please login.'
+    NEW_PASSWORD_REQUIRED   = 'New password is required'
+    USER_NOT_FOUND          = 'No account found with this email'
