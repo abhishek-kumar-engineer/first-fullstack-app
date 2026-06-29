@@ -133,24 +133,14 @@ first-fullstack-app/
         ├── app.routes.ts              # Route definitions
         └── app.config.ts              # App config + interceptor registration
 ```
+## ⚙️ Environment Setup
 
----
-
-## 🗄️ Database Schema
-
-```sql
-CREATE TABLE users (
-    id                INT AUTO_INCREMENT PRIMARY KEY,
-    name              VARCHAR(100)  NOT NULL,
-    email             VARCHAR(150)  NOT NULL UNIQUE,
-    password          VARCHAR(255)  NOT NULL,          -- bcrypt hashed
-    user_login_status BOOLEAN       DEFAULT FALSE,     -- session tracking
-    user_role         VARCHAR(50)   DEFAULT 'user',    -- role based access
-    created_at        TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
-);
+1. `.env.example` copy karo:
+```bash
+   cp backend/.env.example backend/.env
 ```
-
----
+2. `.env` mein apni values fill karo
+3. Server start karo
 
 ## 🔐 Security Deep Dive
 
@@ -269,10 +259,21 @@ CREATE TABLE users (
     id                INT AUTO_INCREMENT PRIMARY KEY,
     name              VARCHAR(100)  NOT NULL,
     email             VARCHAR(150)  NOT NULL UNIQUE,
-    password          VARCHAR(255)  NOT NULL,
-    user_login_status BOOLEAN       DEFAULT FALSE,
-    user_role         VARCHAR(50)   DEFAULT 'user',
+    password          VARCHAR(255)  NOT NULL,          -- bcrypt hashed
+    user_login_status BOOLEAN       DEFAULT FALSE,     -- session tracking
+    user_role         VARCHAR(50)   DEFAULT 'user',    -- role based access
     created_at        TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE password_reset_tokens (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    user_id     INT          NOT NULL,
+    token       VARCHAR(255) NOT NULL UNIQUE,
+    expires_at  DATETIME     NOT NULL,
+    is_used     BOOLEAN      DEFAULT FALSE,
+    created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 ```
 
