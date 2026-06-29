@@ -162,3 +162,96 @@ class AuthController:
                 'user_role': user['user_role']
             }
         )
+    @staticmethod
+    @decrypt_request
+    @encrypt_response
+    def forgot_password():
+        data  = g.decrypted_body
+        email = data.get('email', '').strip()
+
+        # ── Validate ────────────────────────────────
+        if not email:
+            return ResponseHandler.error(AuthMessages.EMAIL_REQUIRED)
+
+        from utils.validators import AuthValidator
+        if not AuthValidator._is_valid_email(email):
+            return ResponseHandler.error(AuthMessages.EMAIL_INVALID)
+
+        # ── check user is existing ? ────────────────
+        user = UserModel.find_by_email(email)
+
+        # Security tip: user mile ya na mile
+        # same message return karo — email enumeration attack rokta hai
+        if not user:
+            return ResponseHandler.success(AuthMessages.RESET_EMAIL_SENT)
+
+        try:
+            # ── Token banao + email bhejo ──────────────
+            from models.reset_token_model import ResetTokenModel
+            from utils.email_helper import send_reset_email
+
+            token = ResetTokenModel.create_token(user['id'])
+            send_reset_email(user['email'], user['name'], token)
+
+            return ResponseHandler.success(AuthMessages.RESET_EMAIL_SENT)
+
+        except Exception as e:
+            print(f"[ERROR] Email send failed: {str(e)}")
+            return ResponseHandler.server_error()
+
+
+    @staticmethod
+    @decrypt_request
+    @encrypt_response
+    def reset_password():
+        data         = g.decrypted_body
+        token        = data.get('token', '').strip()
+        new_password = data.get('new_password', '').strip()
+
+        # ── Validate ──────────────────────────────────
+        if not token:
+            return ResponseHandler.error(AuthMessages.RESET_TOKEN_INVALID)
+
+        if not new_password:
+            return ResponseHandler.error(AuthMessages.NEW_PASSWORD_REQUIRED)
+
+        # Password strength check
+        errors = []
+        if len(new_password) < 6:
+            errors.append(AuthMessages.PASSWORD_TOO_SHORT)
+        import re
+        if not re.search(r'[A-Z]', new_password):
+            errors.append(AuthMessages.PASSWORD_NO_UPPERCASE)
+        if not re.search(r'\d', new_password):
+            errors.append(AuthMessages.PASSWORD_NO_NUMBER)
+        if errors:
+            return ResponseHandler.validation_error(errors)
+
+        # ── Token valid hai? ───────────────────────────
+        from models.reset_token_model import ResetTokenModel
+        reset_record = ResetTokenModel.find_valid_token(token)
+
+        if not reset_record:
+            return ResponseHandler.error(
+                AuthMessages.RESET_TOKEN_INVALID,
+                StatusCode.BAD_REQUEST
+            )
+
+        try:
+            # ── Password update karo ───────────────────
+            import bcrypt
+            hashed = bcrypt.hashpw(
+                new_password.encode('utf-8'),
+                bcrypt.gensalt()
+            ).decode('utf-8')
+
+            # update hashed password in users table
+            ResetTokenModel.update_password(reset_record['user_id'], hashed)
+
+            # ── Token used mark karo ───────────────────
+            ResetTokenModel.mark_token_used(token)
+
+            return ResponseHandler.success(AuthMessages.RESET_SUCCESS)
+
+        except Exception:
+            return ResponseHandler.server_error()
