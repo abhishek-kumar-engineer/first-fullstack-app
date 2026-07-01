@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../services/auth/auth';
 import { Navbar } from '../layout/navbar/navbar';
 import { Sidebar } from '../layout/sidebar/sidebar';
 

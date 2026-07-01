@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
 
-  constructor(private http: HttpClient) { }
+  private http = inject(HttpClient);
 
   // ── Register API call ──────────────────────────────
   register(data: { name: string; email: string; password: string }): Observable<any> {
@@ -53,8 +53,4 @@ export class Auth {
     return user ? JSON?.parse(user) : null;
   }
 
-  // common postData method for all api calls
-  postData(url: string, data: any): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/${url}`, data);
-  }
 }

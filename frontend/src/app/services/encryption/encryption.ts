@@ -1,12 +1,12 @@
 // src/app/services/encryption.service.ts
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EncryptionService {
+export class Encryption {
 
   private key = CryptoJS.enc.Utf8.parse(
     environment.aesKey.substring(0, 32)

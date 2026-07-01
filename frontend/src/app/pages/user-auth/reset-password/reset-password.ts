@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../../services/auth/auth';
+import { Common } from '../../../services/common/common';
 
 @Component({
   selector: 'app-reset-password',
@@ -13,6 +14,11 @@ import { Auth } from '../../services/auth';
 })
 export class ResetPassword {
 
+  private authService = inject(Auth);
+  private commonService = inject(Common);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   token: string = '';
   new_password: string = '';
   isLoading: boolean = false;
@@ -21,9 +27,6 @@ export class ResetPassword {
   errors: string[] = [];
 
   constructor(
-    private authService: Auth,
-    private route: ActivatedRoute,
-    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -41,7 +44,7 @@ export class ResetPassword {
     this.errors = [];
     this.isLoading = true;
 
-    this.authService.postData('reset-password', {
+    this.commonService.postData('reset-password', {
       token: this.token,
       new_password: this.new_password
     }).subscribe({

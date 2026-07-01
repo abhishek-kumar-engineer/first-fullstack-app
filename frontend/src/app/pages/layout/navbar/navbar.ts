@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Auth } from '../../../services/auth';
+import { Auth } from '../../../services/auth/auth';
 import { Router } from '@angular/router';
 
 @Component({

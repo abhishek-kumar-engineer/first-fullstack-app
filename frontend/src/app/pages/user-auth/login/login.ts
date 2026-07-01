@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../../services/auth/auth';
+import { Common } from '../../../services/common/common';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -11,6 +12,11 @@ import { Auth } from '../../services/auth';
   styleUrl: './login.css',
 })
 export class Login {
+
+  private authService = inject(Auth);
+  private commonService = inject(Common);
+  private router = inject(Router);
+
   // Form fields
   formData = {
     email: '',
@@ -22,8 +28,6 @@ export class Login {
   errorMsg = '';
 
   constructor(
-    private authService: Auth,
-    private router: Router
   ) {
     // Agar already logged in hai toh home pe bhejo
     if (this.authService.isLoggedIn()) {
@@ -35,7 +39,7 @@ export class Login {
     this.errorMsg = '';
     this.isLoading = true;
 
-    this.authService.postData('login', this.formData).subscribe({
+    this.commonService.postData('login', this.formData).subscribe({
       next: (response) => {
         console.log('Login successful:', response);
         this.isLoading = false;

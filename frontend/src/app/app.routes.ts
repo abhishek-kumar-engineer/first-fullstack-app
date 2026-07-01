@@ -1,11 +1,11 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
-import { Login } from './pages/login/login';
-import { Register } from './pages/register/register';
+import { Login } from './pages/user-auth/login/login';
+import { Register } from './pages/user-auth/register/register';
 import { Home } from './pages/home/home';
 import { authGuard } from './guards/auth-guard';
-import { ForgotPassword } from './pages/forgot-password/forgot-password';
-import { ResetPassword } from './pages/reset-password/reset-password';
+import { ForgotPassword } from './pages/user-auth/forgot-password/forgot-password';
+import { ResetPassword } from './pages/user-auth/reset-password/reset-password';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

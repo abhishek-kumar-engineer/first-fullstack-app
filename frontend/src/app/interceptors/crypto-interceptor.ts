@@ -9,7 +9,7 @@ import {
 import { inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { EncryptionService } from '../services/encryption';
+import { Encryption } from '../services/encryption/encryption';
 import { environment } from '../../environments/environment';
 
 export const cryptoInterceptor: HttpInterceptorFn = (
@@ -17,7 +17,7 @@ export const cryptoInterceptor: HttpInterceptorFn = (
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
 
-  const encService = inject(EncryptionService);
+  const encService = inject(Encryption);
   const isEncryption = environment.enableEncryption;
 
   // ── Request ────────────────────────────────────────

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../../services/auth/auth';
+import { Common } from '../../../services/common/common';
 
 @Component({
   selector: 'app-register',
@@ -13,31 +14,33 @@ import { Auth } from '../../services/auth';
 })
 export class Register {
 
+  private authService = inject(Auth);
+  private commonService = inject(Common);
+  private router = inject(Router);
+
   // Form fields
   formData = {
-    name    : '',
-    email   : '',
+    name: '',
+    email: '',
     password: ''
   };
 
   // UI state
-  isLoading  = false;
-  errorMsg   = '';
+  isLoading = false;
+  errorMsg = '';
   successMsg = '';
 
   constructor(
-    private authService: Auth,
-    private router: Router
-  ) {}
+  ) { }
 
   onSubmit(): void {
-    this.errorMsg   = '';
+    this.errorMsg = '';
     this.successMsg = '';
-    this.isLoading  = true;
+    this.isLoading = true;
 
-    this.authService.postData('register', this.formData).subscribe({
+    this.commonService.postData('register', this.formData).subscribe({
       next: (response) => {
-        this.isLoading  = false;
+        this.isLoading = false;
         this.successMsg = response.message;
 
         // 2 second baad login page pe redirect
@@ -47,7 +50,7 @@ export class Register {
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMsg  = err.error?.message || 'Something went wrong!';
+        this.errorMsg = err.error?.message || 'Something went wrong!';
       }
     });
   }

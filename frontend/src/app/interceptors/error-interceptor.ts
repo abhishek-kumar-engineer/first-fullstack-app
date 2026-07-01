@@ -10,7 +10,7 @@ import { inject } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { Auth } from '../services/auth';
+import { Auth } from '../services/auth/auth';
 
 export const errorInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,
