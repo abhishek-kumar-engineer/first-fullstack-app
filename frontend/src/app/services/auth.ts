@@ -28,7 +28,7 @@ export class Auth {
 
   // ── Token lo ──────────────────────────────────────
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return localStorage?.getItem('token');
   }
 
   // ── Logged in hai ya nahi check karo ──────────────
@@ -49,8 +49,8 @@ export class Auth {
 
   // ── User info lo ──────────────────────────────────
   getUser(): any {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+    const user = localStorage?.getItem('user');
+    return user ? JSON?.parse(user) : null;
   }
 
   // common postData method for all api calls

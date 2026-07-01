@@ -1,0 +1,103 @@
+<header class="topnav">
+  <!-- LEFT: hamburger + brand -->
+  <div class="topnav-left">
+    <button class="icon-btn" type="button" (click)="onToggleSidebar()" aria-label="Toggle sidebar">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <div class="brand">
+      <span class="brand-icon">
+        <i class="bi bi-hexagon-fill"></i>
+      </span>
+      <span class="brand-text">
+        <span class="brand-name">YourApp</span>
+        <span class="brand-tag">Free Edition</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- CENTER: global search -->
+  <div class="topnav-center">
+    <div class="search-box">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" placeholder="Search data, notebooks, recents, and more..." />
+      <span class="kbd">CTRL + P</span>
+    </div>
+  </div>
+
+  <!-- RIGHT: actions -->
+  <div class="topnav-right">
+    <a href="javascript:void(0)" class="verify-link">Verify identity</a>
+
+    <div class="workspace-dropdown" (click)="toggleWorkspaceMenu()">
+      <span>workspace</span>
+      <i class="bi" [ngClass]="workspaceMenuOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+
+      <div class="dropdown-panel" *ngIf="workspaceMenuOpen">
+        <div class="dropdown-item">Switch workspace</div>
+        <div class="dropdown-item">Account settings</div>
+      </div>
+    </div>
+
+    <button class="icon-btn" type="button" aria-label="What's new">
+      <i class="bi bi-gift"></i>
+    </button>
+
+    <button class="icon-btn" type="button" aria-label="Apps">
+      <i class="bi bi-grid-3x3-gap"></i>
+    </button>
+
+    <div class="avatar-wrapper">
+      <div class="avatar" (click)="toggleAvatarMenu()">{{avatarInitials}}</div>
+
+      <div class="account-panel" *ngIf="avatarMenuOpen">
+        <div class="account-email">{{ currentUser.email }}</div>
+
+        <div class="account-divider"></div>
+
+        <div class="account-block">
+          <div class="account-block-title">{{ currentUser.workspaceName }}</div>
+
+          <div class="account-row">
+            <span class="account-row-label">Workspace ID: {{ currentUser.workspaceId }}</span>
+            <button
+              class="copy-btn"
+              type="button"
+              (click)="copyToClipboard(currentUser.workspaceId, 'workspaceId')"
+              [attr.aria-label]="'Copy workspace ID'"
+            >
+              <i class="bi" [ngClass]="copiedField === 'workspaceId' ? 'bi-check2' : 'bi-copy'"></i>
+            </button>
+          </div>
+
+          <div class="account-row">
+            <span class="account-row-label muted"
+              >OpenSharing ID: {{ currentUser.openSharingId }}</span
+            >
+            <button
+              class="copy-btn"
+              type="button"
+              (click)="copyToClipboard(currentUser.openSharingId, 'openSharingId')"
+              [attr.aria-label]="'Copy open sharing ID'"
+            >
+              <i
+                class="bi"
+                [ngClass]="copiedField === 'openSharingId' ? 'bi-check2' : 'bi-copy'"
+              ></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="account-divider"></div>
+
+        <div class="account-item" (click)="onSettings()">Settings</div>
+        <div class="account-item" (click)="onPrivacyPolicy()">Privacy policy</div>
+        <div class="account-item" (click)="onSendFeedback()">Send feedback</div>
+
+        <div class="account-divider"></div>
+
+        <div class="account-item" (click)="onLogout()">Log out</div>
+      </div>
+    </div>
+  </div>
+</header>

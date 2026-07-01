@@ -1,131 +1,20 @@
-/* src/app/pages/home/home.component.css */
-
-/* ── Navbar ───────────────────────────── */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #667eea;
-  padding: 1rem 2rem;
-  color: white;
-}
-
-.brand {
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.welcome {
-  font-size: 0.95rem;
-}
-
-.logout-btn {
-  background: white;
-  color: #667eea;
-  border: none;
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.logout-btn:hover {
-  opacity: 0.85;
-}
-
-/* ── Main Content ─────────────────────── */
-.container {
-  min-height: 100vh;
-  background: #f0f2f5;
-}
-
-.content {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-/* ── Welcome Card ─────────────────────── */
-.welcome-card {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  margin-bottom: 1.5rem;
-}
-
-.avatar {
-  width: 70px;
-  height: 70px;
-  background: #667eea;
-  color: white;
-  border-radius: 50%;
-  font-size: 2rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-}
-
-.welcome-card h1 {
-  margin: 0 0 0.5rem;
-  color: #1a1a2e;
-}
-
-.welcome-card p {
-  color: #666;
-  margin: 0;
-}
-
-/* ── Info Cards ───────────────────────── */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-}
-
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.2rem 1.5rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.card-icon {
-  font-size: 2rem;
-}
-
-.card-info {
+/* app.component.css */
+.app-shell {
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-.card-label {
-  font-size: 0.8rem;
-  color: #999;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.app-body {
+  flex: 1 1 auto;
+  display: flex;
+  overflow: hidden;
 }
 
-.card-value {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1a1a2e;
-  margin-top: 0.2rem;
-}
-
-.status {
-  color: #28a745;
+.app-content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  background: #121218;
+  color: #e4e4e7;
+  padding: 20px;
 }
