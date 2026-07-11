@@ -25,6 +25,8 @@ export const cryptoInterceptor: HttpInterceptorFn = (
 
   if (req.body && req.method !== 'GET') {
 
+    if (req.body instanceof FormData) { return next(req); }
+    
     if (isEncryption) {
       // Production → encrypted body bhejo
       const encryptedBody = encService.encrypt(req.body);

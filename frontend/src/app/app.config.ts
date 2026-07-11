@@ -6,6 +6,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth-interceptor';
 import { cryptoInterceptor } from './interceptors/crypto-interceptor';
 import { errorInterceptor } from './interceptors/error-interceptor';
+import { APP_LUCIDE_ICONS } from './config/lucid.icon';
+import { provideLucideIcons } from '@lucide/angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,5 +22,6 @@ export const appConfig: ApplicationConfig = {
         errorInterceptor     // 3rd — errors handle
       ])
     ),
+    provideLucideIcons(...APP_LUCIDE_ICONS)
   ]
 };

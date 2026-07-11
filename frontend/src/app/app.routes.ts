@@ -17,5 +17,10 @@ export const routes: Routes = [
     path: 'home',
     component: Home,
     canActivate: [authGuard]   // ← bina login ke home nahi khulega
+  },
+  {
+    path: 'profile',
+    loadComponent: () => import('./core/profile/profile').then(m => m.Profile),
+    canActivate: [authGuard]
   }
 ];

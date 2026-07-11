@@ -94,4 +94,9 @@ export class Navbar {
       }
     });
   }
+
+  onProfile(): void {
+    this.closeAvatarMenu();
+    this.router.navigate(['/profile']);
+  }
 }

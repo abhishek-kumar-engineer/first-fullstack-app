@@ -36,3 +36,8 @@ class AuthMessages:
     RESET_SUCCESS           = 'Password reset successful! Please login.'
     NEW_PASSWORD_REQUIRED   = 'New password is required'
     USER_NOT_FOUND          = 'No account found with this email'
+
+    # ── Profile messages ────────────────────────
+    PROFILE_FETCHED_SUCCESSFULLY = "Profile fetched successfully"
+    PROFILE_UPDATED_SUCCESSFULLY = "Profile updated successfully"
+    AVATAR_UPLOADED_SUCCESSFULLY = "Avatar uploaded successfully"

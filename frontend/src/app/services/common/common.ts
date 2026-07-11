@@ -17,4 +17,12 @@ export class Common {
   postData(url: string, data: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/${url}`, data);
   }
+
+  // common postFormData method — file uploads ke liye (avatar, documents, etc.)
+  // Content-Type header manually set NAHI karte — browser khud boundary ke saath
+  // multipart/form-data set karta hai FormData body dekh kar
+  postFormData(url: string, formData: FormData): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/${url}`, formData);
+  }
+
 }

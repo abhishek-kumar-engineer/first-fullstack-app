@@ -143,25 +143,6 @@ class AuthController:
         except Exception:
             return ResponseHandler.server_error()
 
-
-    @staticmethod
-    @token_required
-    @encrypt_response
-    def get_profile(current_user):
-        user = UserModel.find_by_email(current_user['email'])
-
-        if not user:
-            return ResponseHandler.not_found('User not found')
-
-        return ResponseHandler.success(
-            AuthMessages.PROFILE_FETCHED_SUCCESSFULLY,
-            data={
-                'id'       : user['id'],
-                'name'     : user['name'],
-                'email'    : user['email'],
-                'user_role': user['user_role']
-            }
-        )
     @staticmethod
     @decrypt_request
     @encrypt_response
