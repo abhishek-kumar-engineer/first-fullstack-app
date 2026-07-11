@@ -76,9 +76,9 @@ export class Profile implements OnInit {
 
   saveProfile(formValue: { name: string | null; bio: string | null; phone: string | null } | any): void {
     if (this.profileForm.invalid) return;
-
+    // console.log('Form Value:', formValue);
     this.isSaving.set(true);
-    this.common.postData('profile', formValue).subscribe({
+    this.common.putData('profile', formValue?.value).subscribe({
       next: (res) => {
         this.profile.set(res.data);
         this.isSaving.set(false);
