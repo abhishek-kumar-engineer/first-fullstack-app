@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { LucideDynamicIcon  } from '@lucide/angular'; 
 
 interface UserProfile {
   id: number;
@@ -31,7 +32,7 @@ interface UserProfile {
     MatButtonModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    // LucideIcon 
+    LucideDynamicIcon  
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.css',

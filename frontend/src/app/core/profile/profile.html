@@ -1,22 +1,22 @@
 <div class="profile-container">
-
   @if (isLoading()) {
     <div class="loading-state">
       <mat-spinner diameter="40"></mat-spinner>
       <p>Loading profile...</p>
     </div>
   } @else if (profile(); as user) {
-
     <!-- Avatar Section -->
     <div class="avatar-section">
       <div class="avatar-wrapper">
-        <img
-          [src]="previewUrl() || user.avatar_url || 'assets/images/default-avatar.png'"
-          alt="User avatar"
-          class="avatar-img"
-        />
+        @if (previewUrl() || user.avatar_url) {
+          <img [src]="previewUrl() || user.avatar_url" alt="User avatar" class="avatar-img" />
+        } @else {
+          <div class="avatar-placeholder">
+            <svg [lucideIcon]="'user'" [size]="48"></svg>
+          </div>
+        }
         <label class="avatar-edit-btn" for="avatarInput">
-          <!-- <lucide-icon name="camera" size="16"></lucide-icon> -->
+          <svg [lucideIcon]="'camera'" [size]="16"></svg>
         </label>
         <input
           id="avatarInput"
@@ -30,24 +30,21 @@
       @if (selectedFile()) {
         <div class="avatar-actions">
           <button mat-flat-button color="primary" (click)="uploadAvatar()">
-            <!-- <lucide-icon name="upload" size="16"></lucide-icon> -->
+             <svg [lucideIcon]="'upload'" [size]="16"></svg>
             Upload
           </button>
-          <button mat-stroked-button (click)="cancelAvatarSelection()">
-            Cancel
-          </button>
+          <button mat-stroked-button (click)="cancelAvatarSelection()">Cancel</button>
         </div>
       }
     </div>
 
     <!-- Profile Form -->
     <form class="profile-form" [formGroup]="profileForm" (ngSubmit)="saveProfile(profileForm)">
-
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" placeholder="Your full name" />
         <mat-icon matPrefix>
-          <!-- <lucide-icon name="user" size="18"></lucide-icon> -->
+            <svg [lucideIcon]="'user'" [size]="18"></svg>
         </mat-icon>
         @if (profileForm.get('name')?.hasError('required')) {
           <mat-error>Name is required</mat-error>
@@ -58,7 +55,7 @@
         <mat-label>Email</mat-label>
         <input matInput [value]="user.email" disabled />
         <mat-icon matPrefix>
-          <!-- <lucide-icon name="mail" size="18"></lucide-icon> -->
+            <svg [lucideIcon]="'mail'" [size]="18"></svg>
         </mat-icon>
         <mat-hint>Email cannot be changed</mat-hint>
       </mat-form-field>
@@ -67,7 +64,7 @@
         <mat-label>Phone</mat-label>
         <input matInput formControlName="phone" placeholder="Phone number" />
         <mat-icon matPrefix>
-          <!-- <lucide-icon name="phone" size="18"></lucide-icon> -->
+            <svg [lucideIcon]="'phone'" [size]="18"></svg>
         </mat-icon>
       </mat-form-field>
 
@@ -81,7 +78,7 @@
           placeholder="Tell us something about yourself"
         ></textarea>
         <mat-hint align="end">
-          {{ profileForm?.get('bio')?.value?.length || 0 }}/500
+          {{ profileForm.get('bio')?.value?.length || 0 }}
         </mat-hint>
       </mat-form-field>
 
@@ -100,7 +97,6 @@
         </button>
       </div>
     </form>
-
   } @else {
     <div class="error-state">
       <!-- <lucide-icon name="alert-circle" size="32"></lucide-icon> -->
@@ -108,5 +104,4 @@
       <button mat-stroked-button (click)="loadProfile()">Retry</button>
     </div>
   }
-
 </div>
