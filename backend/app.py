@@ -8,6 +8,7 @@ from config import (
     MAIL_SERVER, MAIL_PORT,
     MAIL_USE_TLS, MAIL_USERNAME, MAIL_PASSWORD
 )
+from routes.profile_routes import profile_bp
 
 app = Flask(__name__)
 # Angular build folder ka path
@@ -33,6 +34,11 @@ CORS(app, resources={
     }
 })
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
+app.register_blueprint(profile_bp)
+
+@app.route('/static/avatars/<filename>')
+def serve_avatar(filename):
+    return send_from_directory('static/avatars', filename)
 
 # ── Angular files serve karo ─────────────────────────
 @app.route('/', defaults={'path': ''})

@@ -60,3 +60,73 @@ class UserModel:
                 conn.commit()
         finally:
             conn.close()
+
+    @staticmethod
+    def get_profile_by_id(user_id):
+        """
+        Fetch user profile fields by user_id.
+        Password field yahan return NAHI karte — security best practice.
+        """
+        connection = get_db_connection()
+        try:
+            with connection.cursor() as cursor:
+                query = """
+                    SELECT id, name, email, avatar_url, bio, phone, 
+                        user_role, created_at, updated_at
+                    FROM users
+                    WHERE id = %s
+                """
+                cursor.execute(query, (user_id,))
+                return cursor.fetchone()
+        finally:
+            connection.close()
+
+    @staticmethod
+    def update_profile(user_id, name=None, bio=None, phone=None):
+        """
+        Partial update — sirf jo fields diye gaye hain wahi update honge.
+        Dynamic query build karte hain taaki NULL se kisi field ko overwrite na karein.
+        """
+        fields = []
+        values = []
+
+        if name is not None:
+            fields.append("name = %s")
+            values.append(name)
+        if bio is not None:
+            fields.append("bio = %s")
+            values.append(bio)
+        if phone is not None:
+            fields.append("phone = %s")
+            values.append(phone)
+
+        if not fields:
+            return False  # kuch update karne layak nahi mila
+
+        values.append(user_id)
+        query = f"UPDATE users SET {', '.join(fields)} WHERE id = %s"
+
+        connection = get_db_connection()
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(query, tuple(values))
+                connection.commit()
+                return cursor.rowcount > 0
+        finally:
+            connection.close()
+
+    @staticmethod
+    def update_avatar_url(user_id, avatar_url):
+        """
+        Separate method for avatar — kyunki avatar upload ka flow
+        (file handling) baaki profile fields se alag hoga.
+        """
+        connection = get_db_connection()
+        try:
+            with connection.cursor() as cursor:
+                query = "UPDATE users SET avatar_url = %s WHERE id = %s"
+                cursor.execute(query, (avatar_url, user_id))
+                connection.commit()
+                return cursor.rowcount > 0
+        finally:
+            connection.close()
