@@ -9,7 +9,13 @@
     <div class="avatar-section">
       <div class="avatar-wrapper">
         @if (previewUrl() || user.avatar_url) {
-          <img [src]="previewUrl() || user.avatar_url" alt="User avatar" class="avatar-img" />
+          <img
+            [src]="
+              previewUrl() || getAvatarUrl(user.avatar_url) || 'assets/images/default-avatar.png'
+            "
+            alt="User avatar"
+            class="avatar-img"
+          />
         } @else {
           <div class="avatar-placeholder">
             <svg [lucideIcon]="'user'" [size]="48"></svg>
@@ -30,7 +36,7 @@
       @if (selectedFile()) {
         <div class="avatar-actions">
           <button mat-flat-button color="primary" (click)="uploadAvatar()">
-             <svg [lucideIcon]="'upload'" [size]="16"></svg>
+            <svg [lucideIcon]="'upload'" [size]="16"></svg>
             Upload
           </button>
           <button mat-stroked-button (click)="cancelAvatarSelection()">Cancel</button>
@@ -44,7 +50,7 @@
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" placeholder="Your full name" />
         <mat-icon matPrefix>
-            <svg [lucideIcon]="'user'" [size]="18"></svg>
+          <svg [lucideIcon]="'user'" [size]="18"></svg>
         </mat-icon>
         @if (profileForm.get('name')?.hasError('required')) {
           <mat-error>Name is required</mat-error>
@@ -55,7 +61,7 @@
         <mat-label>Email</mat-label>
         <input matInput [value]="user.email" disabled />
         <mat-icon matPrefix>
-            <svg [lucideIcon]="'mail'" [size]="18"></svg>
+          <svg [lucideIcon]="'mail'" [size]="18"></svg>
         </mat-icon>
         <mat-hint>Email cannot be changed</mat-hint>
       </mat-form-field>
@@ -64,7 +70,7 @@
         <mat-label>Phone</mat-label>
         <input matInput formControlName="phone" placeholder="Phone number" />
         <mat-icon matPrefix>
-            <svg [lucideIcon]="'phone'" [size]="18"></svg>
+          <svg [lucideIcon]="'phone'" [size]="18"></svg>
         </mat-icon>
       </mat-form-field>
 

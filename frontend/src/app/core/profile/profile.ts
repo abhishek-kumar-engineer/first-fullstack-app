@@ -7,7 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
-import { LucideDynamicIcon  } from '@lucide/angular'; 
+import { LucideDynamicIcon } from '@lucide/angular';
+import { environment } from '../../../environments/environment.development';
 
 interface UserProfile {
   id: number;
@@ -32,7 +33,7 @@ interface UserProfile {
     MatButtonModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    LucideDynamicIcon  
+    LucideDynamicIcon
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
@@ -116,5 +117,10 @@ export class Profile implements OnInit {
         this.cancelAvatarSelection();
       }
     });
+  }
+
+  getAvatarUrl(avatarUrl: string | null): string | null {
+    if (!avatarUrl) return null;
+    return `${environment.baseUrl}${avatarUrl}`;
   }
 }
