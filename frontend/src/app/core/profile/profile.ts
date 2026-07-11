@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { LucideDynamicIcon } from '@lucide/angular';
 import { environment } from '../../../environments/environment.development';
+import { Router } from '@angular/router';
 
 interface UserProfile {
   id: number;
@@ -41,7 +42,8 @@ interface UserProfile {
 export class Profile implements OnInit {
   private common = inject(Common);
   private fb = inject(FormBuilder);
-
+  private router = inject(Router);
+  
   profile = signal<UserProfile | null>(null);
   isLoading = signal(false);
   isSaving = signal(false);
