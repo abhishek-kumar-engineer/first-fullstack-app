@@ -48,7 +48,13 @@
     </button>
 
     <div class="avatar-wrapper">
-      <div class="avatar" (click)="toggleAvatarMenu()">{{avatarInitials}}</div>
+      <div class="avatar" (click)="toggleAvatarMenu()">
+        <img
+          [src]="getAvatarUrl(currentUser.avatar_url) || 'assets/images/default-avatar.png'"
+          alt="User avatar"
+          class="avatar-img"
+        />
+      </div>
 
       <div class="account-panel" *ngIf="avatarMenuOpen">
         <div class="account-email">{{ currentUser.email }}</div>

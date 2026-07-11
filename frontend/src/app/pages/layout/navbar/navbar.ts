@@ -2,6 +2,7 @@ import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Auth } from '../../../services/auth/auth';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +19,7 @@ export class Navbar {
 
   workspaceMenuOpen = false;
   avatarMenuOpen = false;
-  avatarInitials = '😊'; 
+  avatarInitials = '😊';
 
   // Replace with real values from your auth/user service
   currentUser = {
@@ -26,7 +27,8 @@ export class Navbar {
     name: 'Test User',
     workspaceName: 'workspace',
     workspaceId: 'XXXXXXXXXXXX',
-    openSharingId: 'XXXXXXXXXXXX'
+    openSharingId: 'XXXXXXXXXXXX',
+    avatar_url: 'assets/images/default-avatar.png', // or provide a default avatar URL
   };
 
   copiedField: 'workspaceId' | 'openSharingId' | null = null;
@@ -98,5 +100,10 @@ export class Navbar {
   onProfile(): void {
     this.closeAvatarMenu();
     this.router.navigate(['dashboard/profile']);
+  }
+
+  getAvatarUrl(avatarUrl: string | null): string | null {
+    if (!avatarUrl) return null;
+    return `${environment.baseUrl}${avatarUrl}`;
   }
 }
