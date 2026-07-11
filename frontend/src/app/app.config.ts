@@ -8,6 +8,7 @@ import { cryptoInterceptor } from './interceptors/crypto-interceptor';
 import { errorInterceptor } from './interceptors/error-interceptor';
 import { APP_LUCIDE_ICONS } from './config/lucid.icon';
 import { provideLucideIcons } from '@lucide/angular';
+import { loadingInterceptor } from './interceptors/loading-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +20,8 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         cryptoInterceptor,   // 1st — encrypt req / decrypt res
         authInterceptor,     // 2nd — token attach
-        errorInterceptor     // 3rd — errors handle
+        errorInterceptor,     // 3rd — errors handle
+        loadingInterceptor    // 4th — loading indicator
       ])
     ),
     provideLucideIcons(...APP_LUCIDE_ICONS)
