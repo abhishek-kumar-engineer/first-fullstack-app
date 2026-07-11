@@ -127,6 +127,9 @@ class AuthController:
                     'name'             : user['name'],
                     'email'            : user['email'],
                     'user_role'        : user['user_role'],
+                    'avatar_url'       : user['avatar_url'],
+                    'bio'              : user['bio'],
+                    'phone'            : user['phone'],
                     'user_login_status': True
                 }
             }
