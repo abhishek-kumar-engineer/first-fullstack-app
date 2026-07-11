@@ -1,21 +1,20 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { Sidebar } from '../layout/sidebar/sidebar';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Navbar } from '../layout/navbar/navbar';
+import { Router, RouterOutlet } from '@angular/router';
 import { Auth } from '../../services/auth/auth';
-// import { Navbar } from '../layout/navbar/navbar';
-// import { Sidebar } from '../layout/sidebar/sidebar';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './home.html',
-  styleUrl: './home.css',
+  selector: 'app-dashboard',
+  imports: [CommonModule, Navbar, Sidebar, RouterOutlet],
+  templateUrl: './dashboard.html',
+  styleUrl: './dashboard.css',
 })
-export class Home implements OnInit {
+export class Dashboard implements OnInit {
   private authService = inject(Auth);
   private router = inject(Router);
-  
+
   sidebarCollapsed = false;
   user: any = null;
 
@@ -27,5 +26,4 @@ export class Home implements OnInit {
     // localStorage se user info lo
     // this.user = this.authService.getUser();
   }
-
 }

@@ -6,6 +6,8 @@ import { Home } from './pages/home/home';
 import { authGuard } from './guards/auth-guard';
 import { ForgotPassword } from './pages/user-auth/forgot-password/forgot-password';
 import { ResetPassword } from './pages/user-auth/reset-password/reset-password';
+import { Dashboard } from './pages/dashboard/dashboard';
+import { Profile } from './core/profile/profile';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -13,14 +15,26 @@ export const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'reset-password', component: ResetPassword },
+
+  // ── Protected — Dashboard wrapper ─────────────
   {
-    path: 'home',
-    component: Home,
-    canActivate: [authGuard]   // ← bina login ke home nahi khulega
+    path: 'dashboard',
+    component: Dashboard,
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      {
+        path: 'home',
+        loadComponent: () => import('./pages/home/home').then(m => m.Home),
+        canActivate: [authGuard]
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./core/profile/profile').then(m => m.Profile),
+        canActivate: [authGuard]
+      }
+    ]
   },
-  {
-    path: 'profile',
-    loadComponent: () => import('./core/profile/profile').then(m => m.Profile),
-    canActivate: [authGuard]
-  }
+
+  { path: '**', redirectTo: 'login' }
 ];

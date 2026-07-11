@@ -1,4 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+/* html, body { height: 100%; } */
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* src/styles.css */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height    : 100%;
+  margin    : 0;
+  padding   : 0;
+  overflow  : hidden;
+}
+
+/* Angular root element */
+app-root {
+  display       : flex;
+  flex-direction: column;
+  height        : 100%;
+}

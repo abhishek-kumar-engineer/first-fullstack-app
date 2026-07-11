@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { Router } from '@angular/router';
 
 export interface SidebarItem {
   label: string;
@@ -22,6 +22,7 @@ export interface SidebarSection {
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
+  private router =  inject(Router);
   // controlled from parent (toggled by navbar's hamburger button)
   @Input() collapsed = false;
 
@@ -31,35 +32,14 @@ export class Sidebar {
     {
       title: null,
       items: [
-        { label: 'Home', icon: 'bi-house' },
-        { label: 'Learn', icon: 'bi-mortarboard' },
-        { label: 'Workspace', icon: 'bi-grid-1x2' },
-        { label: 'Recents', icon: 'bi-clock-history' },
-        { label: 'Catalog', icon: 'bi-hdd-stack' },
-        { label: 'Jobs & Pipelines', icon: 'bi-diagram-3' },
-        { label: 'Compute', icon: 'bi-cpu' },
-        { label: 'Discover', icon: 'bi-compass' },
-        { label: 'Marketplace', icon: 'bi-shop' }
+        { label: 'Home', icon: 'bi-house', route: '/dashboard/home' },
       ]
     },
     {
-      title: 'SQL',
+      title: 'Settings',
       items: [
-        { label: 'SQL Editor', icon: 'bi-code-square' },
-        { label: 'Queries', icon: 'bi-file-earmark-text' },
-        { label: 'Dashboards', icon: 'bi-bar-chart' },
-        { label: 'Genie Spaces', icon: 'bi-stars' },
-        { label: 'Alerts', icon: 'bi-bell' },
-        { label: 'Query History', icon: 'bi-clock-history' },
-        { label: 'SQL Warehouses', icon: 'bi-database' }
-      ]
-    },
-    {
-      title: 'Data Engineering',
-      items: [
-        { label: 'Runs', icon: 'bi-list-check' },
-        { label: 'Data Ingestion', icon: 'bi-cloud-arrow-up' },
-        { label: 'Visual Data Prep', icon: 'bi-bounding-box' }
+        { label: 'Account', icon: 'bi-gear', route: '/dashboard/account' },
+        { label: 'Security', icon: 'bi-shield-lock', route: '/dashboard/security' },
       ]
     },
     {
@@ -70,8 +50,35 @@ export class Sidebar {
     }
   ];
 
+  ngOnInit(): void {
+    // this.activeLabel = this.sections[0].items[0].label;
+    // current URL se active item set karo
+    this.setActiveFromUrl(this.router.url);
+
+    // route change hone pe active update karo
+    this.router.events.subscribe(() => {
+      this.setActiveFromUrl(this.router.url);
+    });
+  }
+
   setActive(item: SidebarItem): void {
     this.activeLabel = item.label;
-    // hook your router navigation here, e.g. this.router.navigateByUrl(item.route)
+
+    // Route hai toh navigate karo
+    if (item.route) {
+      this.router.navigate([item.route]);
+    }
+  }
+
+  // ── URL se match karke active set karo ────────────
+  private setActiveFromUrl(url: string): void {
+    for (const section of this.sections) {
+      for (const item of section.items) {
+        if (item.route && url.includes(item.route)) {
+          this.activeLabel = item.label;
+          return;
+        }
+      }
+    }
   }
 }

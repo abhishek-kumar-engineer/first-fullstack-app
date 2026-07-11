@@ -1,0 +1,27 @@
+/* src/app/pages/dashboard/dashboard.component.css */
+:host {
+  display       : flex;
+  flex-direction: column;
+  height        : 100%;
+}
+
+.app-shell {
+  display       : flex;
+  flex-direction: column;
+  height        : 100vh;   /* ← full viewport height */
+  overflow      : hidden;
+}
+
+.app-body {
+  display   : flex;
+  flex      : 1;           /* ← bacha hua space le lo */
+  overflow  : hidden;
+  min-height: 0;           /* ← flex children shrink fix */
+}
+
+.app-content {
+  flex      : 1;
+  overflow-y: auto;
+  background: #f5f5f5;    /* ya jo bhi tera content bg hai */
+  padding   : 1.5rem;
+}

@@ -48,7 +48,7 @@ export class Login {
         this.authService.saveToken(data?.token, data?.user);
 
         // Home page pe redirect
-        this.router.navigate(['/home']);
+        this.router.navigate(['/dashboard/home']);
       },
       error: (err) => {
         console.error('Login failed:', err);

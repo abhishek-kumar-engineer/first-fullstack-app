@@ -97,6 +97,6 @@ export class Navbar {
 
   onProfile(): void {
     this.closeAvatarMenu();
-    this.router.navigate(['/profile']);
+    this.router.navigate(['dashboard/profile']);
   }
 }

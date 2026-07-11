@@ -1,15 +1,18 @@
+<!-- src/app/layout/sidebar/sidebar.component.html -->
 <aside class="sidebar" [class.collapsed]="collapsed">
 
   <!-- New button -->
   <button class="new-btn" type="button">
     <i class="bi bi-plus-lg"></i>
-    <span class="label">New</span>
+    <span class="label" *ngIf="!collapsed">New</span>
   </button>
 
   <nav class="sidebar-nav">
     <div class="section" *ngFor="let section of sections">
 
-      <div class="section-title" *ngIf="section.title">
+      <!-- Section title — collapsed hone pe hide karo -->
+      <div class="section-title"
+           *ngIf="section.title && !collapsed">
         {{ section.title }}
       </div>
 
@@ -20,9 +23,19 @@
           [class.active]="item.label === activeLabel"
           [title]="item.label"
           (click)="setActive(item)">
+
           <i class="bi item-icon" [ngClass]="item.icon"></i>
-          <span class="label">{{ item.label }}</span>
-          <span class="badge" *ngIf="item.badge">{{ item.badge }}</span>
+
+          <!-- Label — collapsed hone pe hide karo -->
+          <span class="label" *ngIf="!collapsed">
+            {{ item.label }}
+          </span>
+
+          <!-- Badge — collapsed hone pe bhi dikhao -->
+          <span class="badge" *ngIf="item.badge && !collapsed">
+            {{ item.badge }}
+          </span>
+
         </li>
       </ul>
 
