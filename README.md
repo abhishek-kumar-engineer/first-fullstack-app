@@ -368,8 +368,8 @@ Response
 
 **Abhishek**
 - Frontend Developer expanding into Fullstack
-- Angular · Python · MySQL · Flask
+- Angular · Node · MySQL · Flask
 
 ---
 
-> ⭐ If this project helped you understand fullstack security patterns, consider starring the repo!
+> ⭐ If this project helped you understand fullstack security patterns, consider starring the repo!!!
